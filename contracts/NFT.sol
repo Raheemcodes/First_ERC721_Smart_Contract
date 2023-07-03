@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract MyTestToken is ERC721, AccessControl {
     using Counters for Counters.Counter;
+    uint256 public totalSupply;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     Counters.Counter private _tokenIdCounter;
@@ -21,10 +22,12 @@ contract MyTestToken is ERC721, AccessControl {
             "https://ipfs.io/ipfs/QmUAfW9VqWJnq8RD9ZSmuvVKvCXaFt7VFyr33GHLAk3nwZ/";
     }
 
-    function safeMint(address to) public onlyRole(MINTER_ROLE) {
+    function safeMint() public onlyRole(MINTER_ROLE) {
+        require(totalSupply <= 3, "Supply has been exhausted!");
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
+        _safeMint(msg.sender, tokenId);
+        totalSupply++;
     }
 
     function grantMintRole(address account) public {

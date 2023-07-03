@@ -4,8 +4,12 @@
   "description": "ERC721 Token",
   "main": "index.js",
   "scripts": {
-    "test": "npx hardhat test",
-    "deploy": "npx hardhat run scripts/deploy.ts"
+    "start": "",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.ts --network",
+    "verify": "npx hardhat verify --network",
+    "console": "npx hardhat console",
+    "test": "npx hardhat test"
   },
   "author": "Raheem",
   "license": "ISC",
