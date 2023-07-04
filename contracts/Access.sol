@@ -34,4 +34,12 @@ contract Access {
     function revokeRole(address _account) internal onlyRole(Role.Admin) {
         delete roles[_account];
     }
+
+    function getRole(address _account) public view returns (Role) {
+        return roles[_account];
+    }
+
+    function hasRole(address _account, Role _role) public view returns (bool) {
+        return roles[_account] == _role;
+    }
 }
