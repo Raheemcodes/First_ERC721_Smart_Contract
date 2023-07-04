@@ -23,7 +23,7 @@ contract MyTestToken is ERC721, AccessControl {
     }
 
     function safeMint() public onlyRole(MINTER_ROLE) {
-        require(totalSupply <= 3, "Supply has been exhausted!");
+        require(totalSupply < 3, "Supply has been exhausted!");
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);

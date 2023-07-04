@@ -105,5 +105,18 @@ describe('NFT', () => {
 
       await expect(instance.connect(otherAccount).safeMint()).to.be.reverted;
     });
+
+    it('should not be able to MINT if totalSuppy 3', async () => {
+      const { instance, otherAccount, anotherAccount } = await loadFixture(
+        deployContract
+      );
+      await instance.grantMintRole(otherAccount);
+
+      await instance.connect(otherAccount).safeMint();
+      await instance.connect(otherAccount).safeMint();
+      await instance.connect(otherAccount).safeMint();
+
+      await expect(instance.connect(otherAccount).safeMint()).to.be.reverted;
+    });
   });
 });
