@@ -13,8 +13,7 @@ contract CustomRole is ERC721, Access {
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721("MyTestToken", "TKN") {
-        grantRole(Role.Admin, msg.sender);
-        grantRole(Role.Mint, msg.sender);
+        _grantRole(msg.sender, Role.Admin);
     }
 
     function _baseURI() internal pure override returns (string memory) {
@@ -30,12 +29,12 @@ contract CustomRole is ERC721, Access {
         totalSupply++;
     }
 
-    function grantMintRole(address account) public {
-        grantRole(Role.Mint, account);
+    function grantMintRole(address _account) public {
+        grantRole(_account, Role.Mint);
     }
 
-    function revokeMintRole(address account) public {
-        revokeRole(account);
+    function revokeMintRole(address _account) public {
+        revokeRole(_account);
     }
 
     // The following functions are overrides required by Solidity.
