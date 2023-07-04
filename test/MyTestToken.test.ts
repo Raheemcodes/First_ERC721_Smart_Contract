@@ -36,6 +36,14 @@ describe('NFT', () => {
   });
 
   describe('ADMIN', () => {
+    it('should be able to MINT', async () => {
+      const { instance, owner } = await loadFixture(deployContract);
+
+      await expect(instance.connect(owner).safeMint())
+        .to.emit(instance, 'Transfer')
+        .withArgs(DEFAULT_ADDRESS, owner.address, 0);
+    });
+
     it('should be able to grant MINT role', async () => {
       const { instance, otherAccount } = await loadFixture(deployContract);
 
