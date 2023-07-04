@@ -2,10 +2,10 @@
 pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "./Access.sol";
 
-contract MyTestToken is ERC721, AccessControl {
+contract CustomRole is ERC721, Access {
     using Counters for Counters.Counter;
     uint256 public totalSupply;
 
@@ -13,8 +13,8 @@ contract MyTestToken is ERC721, AccessControl {
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721("MyTestToken", "TKN") {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(MINTER_ROLE, msg.sender);
+        grantRole(Role.Admin, msg.sender);
+        grantRole(Role.Mint, msg.sender);
     }
 
     function _baseURI() internal pure override returns (string memory) {
@@ -22,7 +22,7 @@ contract MyTestToken is ERC721, AccessControl {
             "https://ipfs.io/ipfs/QmUAfW9VqWJnq8RD9ZSmuvVKvCXaFt7VFyr33GHLAk3nwZ/";
     }
 
-    function safeMint() public onlyRole(MINTER_ROLE) {
+    function safeMint() public onlyRole(Role.Mint) {
         require(totalSupply < 3, "Supply has been exhausted!");
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
@@ -31,18 +31,18 @@ contract MyTestToken is ERC721, AccessControl {
     }
 
     function grantMintRole(address account) public {
-        grantRole(MINTER_ROLE, account);
+        grantRole(Role.Mint, account);
     }
 
     function revokeMintRole(address account) public {
-        revokeRole(MINTER_ROLE, account);
+        revokeRole(account);
     }
 
     // The following functions are overrides required by Solidity.
 
     function supportsInterface(
         bytes4 interfaceId
-    ) public view override(ERC721, AccessControl) returns (bool) {
+    ) public view override(ERC721) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 }

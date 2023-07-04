@@ -4,7 +4,7 @@ pragma solidity ^0.8.18;
 contract Access {
     enum Role {
         Admin,
-        Minter
+        Mint
     }
 
     modifier onlyRole(Role _role) {
